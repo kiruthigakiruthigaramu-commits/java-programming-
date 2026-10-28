@@ -1,70 +1,26 @@
-class SharedResource{                
-private int data;        
-private boolean available = false;        
-public synchronized void produce(int value) {  
-    while (available) {     
-        try {                  
-            wait();                 
-            }catch (InterruptedException e) {
-            System.out.println("Thread interrupted");  
-                    }                            
-            }              
-    data = value;                
-    System.out.println("Produced: " + data);  
-    available = true;                 
-    notify();               
-    }     
-    public synchronized void consume() { 
-    while (!available) {
-    try {                          
-        wait();                       
-        } catch (InterruptedException e) {     
-        System.out.println("Thread interrupted"); 
-         }                
-     }               
-     System.out.println("Consumed: " + data);              
-     available = false;             
-     notify();             
-        }   
-}      
-class Producer implements Runnable {            
-    private SharedResource resource;            
-    public Producer(SharedResource resource) {  
-        this.resource = resource;                
-    }          
-    public void run() {           
-        for (int i = 1; i <= 5; i++) {               
-            resource.produce(i); 
-            try {                             
-                     Thread.sleep(100);               
-                } catch (InterruptedException e) { 
-            System.out.println("Thread interrupted");      
-                }              
-        }       
-    }                       
-}  
-class Consumer implements Runnable {       
-    private SharedResource resource;       
-    public Consumer(SharedResource resource) {            
-        this.resource = resource;         
-        }   
-        public void run() {           
-        for (int i = 1; i <= 5; i++) {              
-        resource.consume();               
-        try {                   
-            Thread.sleep(100);               
-            } catch (InterruptedException e) {    
-            System.out.println("Thread interrupted");  
-            }                  
-        }                             
-    }                    
-}      
-    public class InterThreadCommunication {                
-    public static void main(String[] args) {                
-    SharedResource resource = new SharedResource();                
-    Thread producerThread = new Thread(new Producer(resource)); 
-    Thread consumerThread = new Thread(new Consumer(resource)); 
-    producerThread.start();               
-    consumerThread.start();                    
-    }          
+import java.util.Scanner;
+import java.io.File;
+
+class FileDemo
+{
+    public static void main(String[] args)
+    {
+        Scanner input = new Scanner(System.in);
+        String s = input.nextLine();
+        File f1 = new File(s);
+
+        System.out.println("File Name:" + f1.getName());
+        System.out.println("Path:" + f1.getPath());
+        System.out.println("Abs Path:" + f1.getAbsolutePath());
+        System.out.println("Parent:" + f1.getParent());
+        System.out.println("This file is:" + (f1.exists() ? "Exists" : "Does not exists"));
+        System.out.println("Is file:" + f1.isFile());
+        System.out.println("Is Directory:" + f1.isDirectory());
+        System.out.println("Is Readable:" + f1.canRead());
+        System.out.println("Is Writable:" + f1.canWrite());
+        System.out.println("Is Absolute:" + f1.isAbsolute());
+        System.out.println("File Last Modified:" + f1.lastModified());
+        System.out.println("File Size:" + f1.length() + "bytes");
+        System.out.println("Is Hidden:" + f1.isHidden());
+    }
 }
